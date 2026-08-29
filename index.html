@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CampusPulse brings campus deadlines, events and opportunities into one intelligent daily plan." />
+    <meta name="theme-color" content="#08110f" />
+    <title>CampusPulse — Your campus, in sync</title>
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem("currentMode") === "dark" ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", mode);
+          document.documentElement.style.colorScheme = mode;
+
+          var lang = localStorage.getItem("lang") === "ar" ? "ar" : "en";
+          document.documentElement.lang = lang;
+          document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
