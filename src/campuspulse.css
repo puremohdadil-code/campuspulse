@@ -542,6 +542,12 @@ button { cursor: pointer; }
 .processing-orb.is-spinning { animation: cp-orbit 1.2s ease-in-out infinite; }
 @keyframes cp-orbit { 50% { transform: rotate(8deg) scale(1.08); } }
 .onboarding-form { max-width: 720px; }
+.auth-page-shell--long-form .auth-panel { overflow-y: auto; overscroll-behavior: contain; }
+.auth-page-shell--long-form .auth-form-wrap { flex: 1; min-height: 0; margin: 18px auto 12px; padding: 0; display: flex; flex-direction: column; }
+.auth-page-shell--long-form .onboarding-form { flex: 1; min-height: 0; }
+.auth-page-shell--long-form .course-picker { flex: 1 1 220px; min-height: 170px; max-height: none; }
+.auth-page-shell--long-form .onboarding-complete { flex: 0 0 auto; position: relative; z-index: 2; }
+.auth-page-shell--long-form .auth-panel > footer { flex: 0 0 auto; padding-top: 4px; }
 .tag-input-row, .course-search { display: flex; align-items: center; gap: 8px; }
 .tag-input-row input, .tag-input-row select, .course-search input { flex: 1; }
 .tag-input-row button { min-height: 48px; padding: 0 20px; border: 0; background: #0b253b; color: white; font-weight: 800; }

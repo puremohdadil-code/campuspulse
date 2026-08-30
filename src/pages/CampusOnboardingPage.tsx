@@ -174,7 +174,7 @@ export default function CampusOnboardingPage() {
   }
 
   return (
-    <AuthShell eyebrow={text("onboarding.eyebrow")} title={text("onboarding.title")} description={text("onboarding.subtitle")}>
+    <AuthShell eyebrow={text("onboarding.eyebrow")} title={text("onboarding.title")} description={text("onboarding.subtitle")} longForm>
       <form className="auth-form onboarding-form" onSubmit={submit}>
         <div className="auth-two-column">
           <label>{text("onboarding.faculty")}<select value={currentFaculty} onChange={(event) => { setFaculty(event.target.value); setMajor(""); }}><option value="">{text("onboarding.selectFaculty")}</option>{facultyOptions.map((option) => <option value={option} key={option}>{option}</option>)}</select></label>
@@ -199,7 +199,7 @@ export default function CampusOnboardingPage() {
           ))}
         </div>
         {error ? <div className="auth-error">{error}</div> : null}
-        <button className="auth-submit" type="submit" disabled={saveProfile.isPending}>{saveProfile.isPending ? text("onboarding.saving") : text("onboarding.save")}</button>
+        <button className="auth-submit onboarding-complete" type="submit" disabled={saveProfile.isPending}>{saveProfile.isPending ? text("onboarding.saving") : text("onboarding.complete")}</button>
       </form>
     </AuthShell>
   );

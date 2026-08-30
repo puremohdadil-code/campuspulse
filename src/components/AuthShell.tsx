@@ -8,7 +8,7 @@ import { useCampusTranslation } from "../i18n/campusTranslations";
 import { motion, useReducedMotion } from "framer-motion";
 import AnimatedDataMesh from "./AnimatedDataMesh";
 
-export default function AuthShell({ eyebrow, title, description, children }: { eyebrow: string; title: string; description: string; children: ReactNode }) {
+export default function AuthShell({ eyebrow, title, description, children, longForm = false }: { eyebrow: string; title: string; description: string; children: ReactNode; longForm?: boolean }) {
   const { text } = useCampusTranslation();
   const reduceMotion = useReducedMotion();
   const float = (distance: number) => reduceMotion ? undefined : {
@@ -16,7 +16,7 @@ export default function AuthShell({ eyebrow, title, description, children }: { e
     x: [0, distance * .18, 0],
   };
   return (
-    <div className="auth-page-shell">
+    <div className={longForm ? "auth-page-shell auth-page-shell--long-form" : "auth-page-shell"}>
       <section className="auth-panel">
         <div className="auth-panel-top">
           <Link className="auth-brand" to="/"><span className="brand-mark">CP</span><span><strong>CampusPulse</strong><small>{text("common.brandSubtitle")}</small></span></Link>
