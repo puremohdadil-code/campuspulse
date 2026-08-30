@@ -110,7 +110,12 @@ export const attendanceApi = {
 
 export const notificationsApi = {
   personalize: () => http.post<{ message: string; created: number; updated: number; skipped: number }>(`${NOTIFICATIONS}/personalize`).then((r) => r.data),
-  list: (unread = false) => http.get<{ notifications: UserNotification[] }>(NOTIFICATIONS, { params: unread ? { unread: true } : {} }).then((r) => r.data.notifications),
+  // `content` is a populated reference. When the campus-content item behind
+  // a notification no longer exists the server still returns the row, with
+  // content null — and every consumer reads notification.content.*, so those
+  // rows are dropped here instead of being guarded at each call site.
+  list: (unread = false) => http.get<{ notifications: UserNotification[] }>(NOTIFICATIONS, { params: unread ? { unread: true } : {} })
+    .then((r) => r.data.notifications.filter((notification) => notification.content)),
   dailyBrief: () => http.get<DailyBrief>(`${NOTIFICATIONS}/daily-brief`).then((r) => r.data),
   // The same feed reshaped as an inbox (channel, course, subject, preview).
   messages: () => http.get<{ messages: CampusMessage[]; unreadCount: number }>(`${NOTIFICATIONS}/messages`).then((r) => r.data),
