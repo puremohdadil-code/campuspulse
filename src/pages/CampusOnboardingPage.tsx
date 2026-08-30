@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { FormEvent, KeyboardEvent } from "react";
+import type { FormEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
@@ -14,6 +14,17 @@ import { useCampusTranslation } from "../i18n/campusTranslations";
 
 function uniqueTags(values: string[]) {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+
+function optionLabel(value: string) {
+  const acronyms: Record<string, string> = { ai: "AI", it: "IT", ux: "UX", vr: "VR", ar: "AR" };
+  return value
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .map((part) => acronyms[part.toLowerCase()] ?? `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join(" ");
 }
 
 export default function CampusOnboardingPage() {
@@ -35,10 +46,48 @@ export default function CampusOnboardingPage() {
   const academic = useQuery({ queryKey: ["academic-profile"], queryFn: academicApi.get, retry: false });
 
   const currentCourses = selected ?? academic.data?.courses ?? [];
-  const currentInterests = interests ?? academic.data?.interests ?? [];
+  const currentInterests = useMemo(
+    () => interests ?? academic.data?.interests ?? [],
+    [academic.data?.interests, interests],
+  );
   const currentFaculty = faculty ?? academic.data?.faculty ?? "";
   const currentMajor = major ?? academic.data?.major ?? "";
   const currentYear = year ?? (academic.data?.yearOfStudy ? String(academic.data.yearOfStudy) : "");
+
+  const facultyOptions = useMemo(
+    () => uniqueTags([
+      academic.data?.faculty ?? "",
+      ...(catalog.data ?? []).map((course) => course.faculty ?? ""),
+    ]).sort((a, b) => a.localeCompare(b)),
+    [academic.data?.faculty, catalog.data],
+  );
+
+  const catalogTags = useMemo(
+    () => uniqueTags((catalog.data ?? []).flatMap((course) => course.tags ?? [])),
+    [catalog.data],
+  );
+
+  const majorOptions = useMemo(() => {
+    const facultyCourses = currentFaculty
+      ? (catalog.data ?? []).filter((course) => course.faculty?.trim() === currentFaculty)
+      : (catalog.data ?? []);
+    const facultyName = currentFaculty.toLowerCase();
+    const usableTags = uniqueTags(facultyCourses.flatMap((course) => course.tags ?? []))
+      .filter((tag) => {
+        const normalized = tag.toLowerCase();
+        return normalized !== facultyName
+          && !normalized.startsWith("school of ")
+          && !normalized.startsWith("faculty of ")
+          && !["core", "elective", "general", "course"].includes(normalized);
+      })
+      .map(optionLabel);
+    return uniqueTags([academic.data?.major ?? "", ...usableTags]).sort((a, b) => a.localeCompare(b));
+  }, [academic.data?.major, catalog.data, currentFaculty]);
+
+  const interestOptions = useMemo(
+    () => uniqueTags([...currentInterests, ...catalogTags]).sort((a, b) => optionLabel(a).localeCompare(optionLabel(b))),
+    [catalogTags, currentInterests],
+  );
 
   const realIds = useMemo(() => new Set((catalog.data ?? []).map((course) => course._id)), [catalog.data]);
   const grouped = useMemo(() => {
@@ -56,12 +105,6 @@ export default function CampusOnboardingPage() {
     const next = uniqueTags([...currentInterests, interestDraft]);
     if (next.length !== currentInterests.length) setInterests(next);
     setInterestDraft("");
-  };
-
-  const onInterestKey = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key !== "Enter" && event.key !== ",") return;
-    event.preventDefault();
-    addInterest();
   };
 
   const personalize = async () => {
@@ -134,13 +177,13 @@ export default function CampusOnboardingPage() {
     <AuthShell eyebrow={text("onboarding.eyebrow")} title={text("onboarding.title")} description={text("onboarding.subtitle")}>
       <form className="auth-form onboarding-form" onSubmit={submit}>
         <div className="auth-two-column">
-          <label>{text("onboarding.faculty")}<input value={currentFaculty} onChange={(event) => setFaculty(event.target.value)} /></label>
-          <label>{text("onboarding.major")}<input value={currentMajor} onChange={(event) => setMajor(event.target.value)} /></label>
+          <label>{text("onboarding.faculty")}<select value={currentFaculty} onChange={(event) => { setFaculty(event.target.value); setMajor(""); }}><option value="">{text("onboarding.selectFaculty")}</option>{facultyOptions.map((option) => <option value={option} key={option}>{option}</option>)}</select></label>
+          <label>{text("onboarding.major")}<select value={currentMajor} onChange={(event) => setMajor(event.target.value)} disabled={!majorOptions.length}><option value="">{text("onboarding.selectMajor")}</option>{majorOptions.map((option) => <option value={option} key={option}>{option}</option>)}</select></label>
         </div>
-        <label>{text("onboarding.year")}<input type="number" min={1} max={10} value={currentYear} onChange={(event) => setYear(event.target.value)} /></label>
+        <label>{text("onboarding.year")}<select value={currentYear} onChange={(event) => setYear(event.target.value)}><option value="">{text("onboarding.selectYear")}</option>{Array.from({ length: 10 }, (_, index) => String(index + 1)).map((option) => <option value={option} key={option}>{option}</option>)}</select></label>
 
         <label>{text("onboarding.interests")}
-          <span className="tag-input-row"><input value={interestDraft} onChange={(event) => setInterestDraft(event.target.value)} onKeyDown={onInterestKey} placeholder={text("onboarding.interestHint")} /><button type="button" onClick={addInterest}>{text("onboarding.add")}</button></span>
+          <span className="tag-input-row"><select value={interestDraft} onChange={(event) => setInterestDraft(event.target.value)}><option value="">{text("onboarding.selectInterest")}</option>{interestOptions.filter((option) => !currentInterests.includes(option)).map((option) => <option value={option} key={option}>{optionLabel(option)}</option>)}</select><button type="button" onClick={addInterest} disabled={!interestDraft}>{text("onboarding.add")}</button></span>
         </label>
         <div className="onboarding-tags">
           {currentInterests.map((interest) => <button type="button" key={interest} onClick={() => setInterests(currentInterests.filter((item) => item !== interest))}>{interest}<CloseRoundedIcon /></button>)}
