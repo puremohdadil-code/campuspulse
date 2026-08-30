@@ -119,7 +119,7 @@ src/
 
 The starter kit includes a collection of carefully designed **free themes** that are ready to use. Switching between themes is simple, making it easy to customize your application's appearance.
 
-## 📱 Responsive Design
+## Responsive Design
 
 Every component is built with responsiveness in mind, ensuring an excellent experience across:
 
