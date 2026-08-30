@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { authApi, settingsApi } from "../api/campuspulse";
+import { AUTH_SESSION_EXPIRED_EVENT } from "../api/http";
 import type { ApiUser } from "../api/types";
 import { getStoredLang, setLang } from "../i18n";
 
@@ -26,6 +27,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [loading, setLoading] = useState(true);
   const queryClient = useQueryClient();
+
+  // The HTTP layer reports an unrecoverable 401 without manipulating the
+  // browser location. Keeping the state transition here prevents full-page
+  // reload loops and lets RequireAuth perform one normal React redirect.
+  useEffect(() => {
+    const expireSession = () => {
+      setSession(null);
+      setLoading(false);
+      queryClient.clear();
+    };
+    window.addEventListener(AUTH_SESSION_EXPIRED_EVENT, expireSession);
+    return () => window.removeEventListener(AUTH_SESSION_EXPIRED_EVENT, expireSession);
+  }, [queryClient]);
 
   // Step 1 of the documented flow: ask the server who we are. The tokens
   // live in httpOnly cookies, so this call is the only way to learn there

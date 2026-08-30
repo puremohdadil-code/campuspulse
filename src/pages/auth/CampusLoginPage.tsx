@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
@@ -15,6 +15,7 @@ export default function CampusLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const submitLock = useRef(false);
   const { signIn } = useAuth();
   const { text } = useCampusTranslation();
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ export default function CampusLoginPage() {
       setError(text("login.error"));
       return;
     }
+    if (submitLock.current) return;
+    submitLock.current = true;
     setError("");
     setSubmitting(true);
     try {
@@ -39,6 +42,7 @@ export default function CampusLoginPage() {
       }
       setError(apiErrorMessage(requestError, text("login.failed")));
     } finally {
+      submitLock.current = false;
       setSubmitting(false);
     }
   };

@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
@@ -109,11 +109,10 @@ function SettingsForm({ initial }: { initial: SettingsValues }) {
   const {
     control,
     handleSubmit,
-    watch,
     formState: { isSubmitting },
   } = useForm({ resolver: zodResolver(schema), defaultValues: initial });
 
-  const twmEnabled = watch("TWM");
+  const twmEnabled = useWatch({ control, name: "TWM" });
 
   const submit = handleSubmit(async (values) => {
     try {

@@ -2,6 +2,8 @@ import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { BASE_URL } from "../config";
 import { AUTH } from "./endpoint";
 
+export const AUTH_SESSION_EXPIRED_EVENT = "campuspulse:auth-session-expired";
+
 // Single axios instance for the whole app. Cookies carry the JWTs
 // (httpOnly `accessToken`/`refreshToken`, see server.js), so every
 // request goes out with credentials — there is no token to attach by hand.
@@ -59,11 +61,16 @@ http.interceptors.response.use(
     try {
       await refreshAccessToken();
       return http(config);
-    } catch (refreshError) {
-      if (typeof window !== "undefined" && !PUBLIC_AUTH_PATHS.some((path) => window.location.pathname.includes(path))) {
-        window.location.href = "/login";
+    } catch {
+      // Never hard-reload the browser here. On public routes (especially
+      // /login) an anonymous /auth/me probe is expected to fail. Reloading
+      // /login starts that probe again and creates an endless refresh loop.
+      // React owns navigation: AuthProvider clears the session and
+      // RequireAuth declaratively redirects protected routes to /login.
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event(AUTH_SESSION_EXPIRED_EVENT));
       }
-      throw refreshError;
+      throw error;
     }
   }
 );
