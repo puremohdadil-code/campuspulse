@@ -2,25 +2,25 @@
 
 A modern and production-ready React Starter Kit built with **React 19**, **Vite**, and **Material UI (MUI)**. It includes the most essential libraries and a well-structured architecture to help you start building scalable applications in minutes instead of spending hours configuring your project.
 
-## ✨ Features
+## Features
 
-* 🚀 Built with **React 19** and **Vite**
-* 🎨 Fully integrated **Material UI (MUI)**
-* 🌙 Ready-to-use **Dark & Light Mode**
-* 🌍 Complete **Internationalization (i18n)** support
-* 📱 Fully responsive design for all screen sizes
-* 🧩 Clean and scalable project architecture
-* ⚡ Pre-configured API layer with Axios
-* 🔒 Route protection (Public & Protected Routes)
-* 📊 MUI Data Grid, Charts, and Date Pickers included
-* ✅ Form validation using React Hook Form + Zod
-* 🎭 Smooth animations with Framer Motion
-* 🔔 Multiple notification systems (Notistack & React Hot Toast)
-* 🎯 Ready for enterprise and SaaS applications
+* Built with **React 19** and **Vite**
+* Fully integrated **Material UI (MUI)**
+* Ready-to-use **Dark & Light Mode**
+* Complete **Internationalization (i18n)** support
+* Fully responsive design for all screen sizes
+* Clean and scalable project architecture
+* Pre-configured API layer with Axios
+* Route protection (Public & Protected Routes)
+* MUI Data Grid, Charts, and Date Pickers included
+* Form validation using React Hook Form + Zod
+* Smooth animations with Framer Motion
+* Multiple notification systems (Notistack & React Hot Toast)
+* Ready for enterprise and SaaS applications
 
 
 
-## 📦 Included Libraries
+## Included Libraries
 
 ```json
 {
@@ -58,7 +58,7 @@ A modern and production-ready React Starter Kit built with **React 19**, **Vite*
 }
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 src/
@@ -115,7 +115,7 @@ src/
 └── index.css
 ```
 
-## 🎨 Themes
+## Themes
 
 The starter kit includes a collection of carefully designed **free themes** that are ready to use. Switching between themes is simple, making it easy to customize your application's appearance.
 
@@ -128,7 +128,7 @@ Every component is built with responsiveness in mind, ensuring an excellent expe
 * Tablet
 * Mobile devices
 
-## 🌍 Internationalization
+## Internationalization
 
 The project comes pre-configured with **i18next**, including:
 
@@ -137,7 +137,7 @@ The project comes pre-configured with **i18next**, including:
 * RTL styling with Stylis
 * Easy language management
 
-## 🚀 Getting Started
+## Getting Started
 
 Clone the repository:
 
@@ -159,7 +159,7 @@ npm run dev
 
 Your application is now ready to use.
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License**. You are free to use, modify, and distribute it for both personal and commercial projects.
 
