@@ -19,7 +19,6 @@ A modern and production-ready React Starter Kit built with **React 19**, **Vite*
 * 🎯 Ready for enterprise and SaaS applications
 
 
-![alt text](image.png)
 
 ## 📦 Included Libraries
 
