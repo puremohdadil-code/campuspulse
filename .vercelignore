@@ -1,0 +1,9 @@
+.git
+.vercel
+.env
+.env.*
+.claude
+.openai
+node_modules
+dist
+tmp
