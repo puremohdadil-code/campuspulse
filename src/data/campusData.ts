@@ -125,11 +125,17 @@ export interface CampusNotification {
   title: string;
   body: string;
   time: string;
-  type: CampusCategory | "Agent";
+  type: CampusCategory | "Agent" | "Attendance";
   read: boolean;
+  severity?: "notice" | "warning" | "elevated" | "critical" | "barred";
 }
 
 export const initialNotifications: CampusNotification[] = [
+  { id: 10, title: "Attendance bar reached", body: "Your TDC 2211 attendance is below 70%. Visit your faculty officer and lecturer with any medical excuses.", time: "Just now", type: "Attendance", severity: "barred", read: false },
+  { id: 9, title: "Fourth absence recorded", body: "Your THCI 2301 attendance is now 71.44%. Immediate action is required.", time: "5 min ago", type: "Attendance", severity: "critical", read: false },
+  { id: 8, title: "Third absence recorded", body: "Your TSE 2101 attendance has dropped to 78.58%.", time: "12 min ago", type: "Attendance", severity: "elevated", read: false },
+  { id: 7, title: "Second absence recorded", body: "Your TDB 2201 attendance is now 85.72%. Please review your schedule.", time: "18 min ago", type: "Attendance", severity: "warning", read: false },
+  { id: 6, title: "First absence recorded", body: "You missed AI Ethics. Your attendance is now 92.86%.", time: "22 min ago", type: "Attendance", severity: "notice", read: false },
   { id: 1, title: "Deadline moved forward", body: "AI Ethics assignment is now due today at 12:00 PM.", time: "8 min ago", type: "Academic", read: false },
   { id: 2, title: "Pulse AI found a conflict", body: "Your product workshop overlaps with the project-team check-in.", time: "24 min ago", type: "Agent", read: false },
   { id: 3, title: "Scholarship closing soon", body: "The Maybank FutureReady application closes in three days.", time: "1 hr ago", type: "Scholarship", read: false },

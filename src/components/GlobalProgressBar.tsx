@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigation } from "react-router-dom";
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 
-import { COLORS } from "../styles/colors";
 
 // A slim top-of-viewport progress bar (GitHub/YouTube/Linear style) that
 // reacts to two independent sources automatically, with no per-page wiring:
@@ -19,19 +17,7 @@ export function GlobalProgressBar() {
   const isMutating = useIsMutating();
 
   const active = navigation.state !== "idle" || isFetching > 0 || isMutating > 0;
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (active) {
-      setVisible(true);
-      return;
-    }
-    if (!visible) return;
-    const timeout = setTimeout(() => setVisible(false), 300);
-    return () => clearTimeout(timeout);
-  }, [active, visible]);
-
-  if (!visible) return null;
+  if (!active) return null;
 
   return (
     <Box
@@ -59,8 +45,10 @@ export function GlobalProgressBar() {
         }}
         sx={{
           height: "100%",
-          background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryHover})`,
-          boxShadow: `0 0 8px ${COLORS.primary}`,
+          // The portal palette, not the starter theme: the same red the
+          // route and page spinners use, so every loading cue matches.
+          background: "linear-gradient(90deg, var(--uni-red), var(--uni-red-bright))",
+          boxShadow: "0 0 8px rgba(163, 58, 50, .55)",
         }}
       />
     </Box>

@@ -3,12 +3,13 @@ import { initReactI18next } from "react-i18next";
 import resources from "./resources";
 
 export const LANG_STORAGE_KEY = "lang";
-export type Lang = "en" | "ar";
+export type Lang = "en" | "ar" | "ms";
 export const RTL_LANGS: Lang[] = ["ar"];
 
 export function getStoredLang(): Lang {
   if (typeof window === "undefined") return "en";
-  return window.localStorage.getItem(LANG_STORAGE_KEY) === "ar" ? "ar" : "en";
+  const stored = window.localStorage.getItem(LANG_STORAGE_KEY);
+  return stored === "ar" || stored === "ms" ? stored : "en";
 }
 
 export function dirFor(lang: Lang): "rtl" | "ltr" {
@@ -30,7 +31,7 @@ i18n.use(initReactI18next).init({
 
 // Keep <html lang/dir> in sync whenever the language changes, however it changes
 // (this call, browser back/forward restoring i18next-persisted state, etc).
-i18n.on("languageChanged", (lng) => applyLangAttributes((lng as Lang) === "ar" ? "ar" : "en"));
+i18n.on("languageChanged", (lng) => applyLangAttributes(lng === "ar" || lng === "ms" ? lng : "en"));
 
 /** Switches the active language app-wide: i18next, localStorage, and <html lang/dir>. */
 export function setLang(lang: Lang) {

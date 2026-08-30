@@ -1,13 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { http } from "../api/http";
-import { verifyToken } from "../api/endpoint";
+import { authApi } from "../api/campuspulse";
+import type { ApiUser } from "../api/types";
 
-export interface SessionUser {
-  sub: string;
-  role: string;
-  email: string;
-  type: string;
-}
+export type SessionUser = ApiUser;
 
 // Backs route guarding (ProtectedRoute) and anything that just needs to
 // know "is there a valid session" + the JWT's own claims (role/email).
@@ -16,10 +11,7 @@ export interface SessionUser {
 export function useSession() {
   return useQuery({
     queryKey: ["session"],
-    queryFn: async () => {
-      const { data } = await http.get<{ valid: boolean; user: SessionUser }>(verifyToken);
-      return data.user;
-    },
+    queryFn: authApi.me,
     retry: false,
     staleTime: 60_000,
   });

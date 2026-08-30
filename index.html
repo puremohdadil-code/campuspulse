@@ -5,7 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="CampusPulse brings campus deadlines, events and opportunities into one intelligent daily plan." />
-    <meta name="theme-color" content="#08110f" />
+    <meta name="theme-color" content="#0b1f33" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CampusPulse — Your campus, clearly connected." />
+    <meta property="og:description" content="A focused student portal for attendance, deadlines, campus email and opportunities." />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CampusPulse — Your campus, clearly connected." />
+    <meta name="twitter:description" content="A focused student portal for attendance, deadlines, campus email and opportunities." />
+    <meta name="twitter:image" content="/og.png" />
     <title>CampusPulse — Your campus, in sync</title>
     <script>
       (function () {
@@ -14,7 +22,8 @@
           document.documentElement.setAttribute("data-theme", mode);
           document.documentElement.style.colorScheme = mode;
 
-          var lang = localStorage.getItem("lang") === "ar" ? "ar" : "en";
+          var storedLang = localStorage.getItem("lang");
+          var lang = storedLang === "ar" || storedLang === "ms" ? storedLang : "en";
           document.documentElement.lang = lang;
           document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
         } catch (e) {}

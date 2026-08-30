@@ -8,6 +8,7 @@ import { AUTH } from "./endpoint";
 export const http = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
+  timeout: 20_000,
 });
 
 type RetriableConfig = InternalAxiosRequestConfig & { _retried?: boolean };
@@ -59,8 +60,8 @@ http.interceptors.response.use(
       await refreshAccessToken();
       return http(config);
     } catch (refreshError) {
-      if (typeof window !== "undefined" && window.location.pathname !== "/auth") {
-        window.location.href = "/auth";
+      if (typeof window !== "undefined" && !PUBLIC_AUTH_PATHS.some((path) => window.location.pathname.includes(path))) {
+        window.location.href = "/login";
       }
       throw refreshError;
     }

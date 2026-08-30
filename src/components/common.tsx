@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useRef, useState } from "react";
 
 import {
@@ -1046,6 +1047,7 @@ export function AppDialog({ title, actions, children, sx, ...props }: AppDialogP
   return (
     <Dialog
       {...props}
+      sx={sx}
       slotProps={{
         paper: {
           sx: {

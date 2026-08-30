@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Cairo:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..900&family=Source+Sans+3:ital,wght@0,400..800;1,400..800&family=Source+Serif+4:opsz,wght@8..60,500..800&display=swap');
 
 /* =====================================================
    Theme variables — light/dark mode
@@ -67,9 +67,7 @@
    generic sans-serif (Tahoma on Windows) — mismatched against Inter's look.
    Cairo covers Arabic with a similar weight range; the browser picks it
    per-glyph, so Latin text still renders in Inter unaffected. */
-* {
-  font-family: "Inter", "Cairo", sans-serif;
-}
+* { font-family: "Source Sans 3", "Cairo", sans-serif; }
 
 html, body, #root {
   min-height: 100%;
@@ -83,6 +81,13 @@ body {
 }
 
 a { color: inherit; }
+
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.language-switcher { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 8px; border: 1px solid #dbe4e0; border-radius: 10px; background: #fff; color: #526159; }
+.language-switcher > svg { flex: none; font-size: 16px; }
+.language-switcher select { max-width: 118px; border: 0; outline: 0; background: transparent; color: inherit; font-size: 10px; font-weight: 750; cursor: pointer; }
+.language-switcher.dark { border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.05); color: #d9e5e0; }
+.language-switcher.dark select option { color: #13211c; background: white; }
 
 .landing-shell {
   min-height: 100vh;
@@ -103,6 +108,7 @@ a { color: inherit; }
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, .09);
 }
+.landing-nav-actions { display: flex; align-items: center; gap: 10px; }
 
 .brand-lockup { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 18px; text-decoration: none; letter-spacing: -.02em; }
 .brand-mark, .mini-mark { display: grid; place-items: center; background: #3bebab; color: #07110e; font-weight: 900; }
@@ -247,6 +253,10 @@ a { color: inherit; }
 .landing-footer strong { font-size: 13px; }
 .landing-footer small { margin-left: auto; color: #586b63; font-size: 9px; }
 
+[dir="rtl"] .landing-feature-grid article > span { right: auto; left: 28px; }
+[dir="rtl"] .landing-footer small { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .primary-cta svg { transform: scaleX(-1); }
+
 @media (max-width: 900px) {
   .landing-feature-grid { grid-template-columns: 1fr; }
   .landing-feature-grid article { min-height: 170px; }
@@ -261,6 +271,7 @@ a { color: inherit; }
   .story-image, .story-image img { min-height: 390px; }
   .landing-footer { flex-wrap: wrap; }
   .landing-footer small { width: 100%; margin-left: 0; }
+  .landing-nav .language-switcher select { max-width: 68px; }
 }
 
 /* SweetAlert2's default z-index (1060) sits below MUI's Dialog/Modal
