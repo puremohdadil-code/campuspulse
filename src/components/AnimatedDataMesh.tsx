@@ -2,7 +2,7 @@ import { useReducedMotion } from "framer-motion";
 
 export default function AnimatedDataMesh({ variant = "auth" }: { variant?: "auth" | "hero" }) {
   const reduceMotion = useReducedMotion();
-  return (
+  return ( 
     <div className={`campus-data-mesh campus-data-mesh--${variant}`} aria-hidden="true">
       <svg viewBox="0 0 1000 760" preserveAspectRatio="none">
         <defs>
