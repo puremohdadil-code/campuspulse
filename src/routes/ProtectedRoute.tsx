@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
 
   if (isLoading) return <AppLoader label="Checking session…" />;
   if (isError || !session) return <Navigate to="/auth" replace />;
-
+ 
   return <Outlet />;
 };
 
